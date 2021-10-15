@@ -5,6 +5,7 @@ import http from "http";
 import { Server as socketio } from "socket.io";
 import path from "path";
 import cors from "cors";
+import { dbConnection } from "../database/config";
 
 import Sockets from "./sockets";
 
@@ -16,6 +17,9 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+
+    //Conexion a la BD
+    dbConnection();
 
     // Http server
     this.server = http.createServer(this.app);
