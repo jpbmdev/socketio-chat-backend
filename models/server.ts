@@ -6,6 +6,7 @@ import { Server as socketio } from "socket.io";
 import path from "path";
 import cors from "cors";
 import { dbConnection } from "../database/config";
+import AuthRoutes from "../routes/auth.routes";
 
 import Sockets from "./sockets";
 
@@ -36,6 +37,9 @@ class Server {
 
     // CORS
     this.app.use(cors());
+
+    //API ENDPoints
+    this.app.use("/api/login", AuthRoutes);
   }
 
   // Esta configuración se puede tener aquí o como propieda de clase
