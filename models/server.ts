@@ -38,6 +38,9 @@ class Server {
     // CORS
     this.app.use(cors());
 
+    //Habilitar el body
+    this.app.use(express.json());
+
     //API ENDPoints
     this.app.use("/api/login", AuthRoutes);
   }
