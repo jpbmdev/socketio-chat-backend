@@ -1,21 +1,26 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
+import Usuario from "../models/usuario";
 
 export const crearUsuario = async (req: Request, res: Response) => {
-  res.json({
-    ok: true,
-    msg: "new",
-  });
+  try {
+    const { email, password } = req.body;
+
+    
+
+    res.json({
+      email,
+      password,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administradot",
+    });
+  }
 };
 
 export const login = async (req: Request, res: Response) => {
-  const errores = validationResult(req);
-  if (!errores.isEmpty()) {
-    return res.status(400).json({
-      ok: false,
-      errors: errores.mapped(),
-    });
-  }
   const { email, password } = req.body;
   res.json({
     ok: true,
