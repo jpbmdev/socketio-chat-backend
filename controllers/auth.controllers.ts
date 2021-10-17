@@ -82,8 +82,17 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const renewToken = async (req: Request, res: Response) => {
+  const uid = req.uid;
+
+  //Generar un nuevo token
+  const token = await generarJWT(uid);
+
+  //Obtener el usuairo por id
+  const usuario = await Usuario.findById(uid);
+
   res.json({
     ok: true,
-    msg: "renew",
+    usuario,
+    token,
   });
 };
