@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { check } from "express-validator";
+import { check, validationResult } from "express-validator";
 import {
   crearUsuario,
   login,
   renewToken,
 } from "../controllers/auth.controllers";
 import { validarCampos } from "../middlewares/validar-campos.middleware";
+import { validarJWT } from "../middlewares/validar-jwt.middleware";
 
 /*  
   Path: api/login
@@ -37,6 +38,6 @@ router.post(
 );
 
 //Revaliar Token
-router.get("/renew", renewToken);
+router.get("/renew", validarJWT, renewToken);
 
 export default router;

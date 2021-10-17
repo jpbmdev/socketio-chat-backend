@@ -29,6 +29,7 @@ export const crearUsuario = async (req: Request, res: Response) => {
     const token = await generarJWT(usuario.id);
 
     res.json({
+      ok: true,
       usuario,
       token,
     });
@@ -43,12 +44,41 @@ export const crearUsuario = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  res.json({
-    ok: true,
-    msg: "login",
-    email,
-    password,
-  });
+
+  try {
+    //Verificar si el usuiaro existe
+    const usuarioDb = await Usuario.findOne({ email });
+    if (!usuarioDb) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Email no encontrado",
+      });
+    }
+
+    //Validar contraseña
+    const validPassword = bcrypt.compareSync(password, usuarioDb.password);
+    if (!validPassword) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Password no es correcto",
+      });
+    }
+
+    //Generar el JWT
+    const token = await generarJWT(usuarioDb.id);
+
+    res.json({
+      ok: true,
+      usuario: usuarioDb,
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administradot",
+    });
+  }
 };
 
 export const renewToken = async (req: Request, res: Response) => {
