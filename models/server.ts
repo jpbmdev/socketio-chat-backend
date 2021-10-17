@@ -7,6 +7,7 @@ import path from "path";
 import cors from "cors";
 import { dbConnection } from "../database/config";
 import AuthRoutes from "../routes/auth.routes";
+import MensajesRoutres from "../routes/mensajes.routes";
 
 import Sockets from "./sockets";
 
@@ -43,6 +44,7 @@ class Server {
 
     //API ENDPoints
     this.app.use("/api/login", AuthRoutes);
+    this.app.use("/api/mensajes", MensajesRoutres);
   }
 
   // Esta configuración se puede tener aquí o como propieda de clase
